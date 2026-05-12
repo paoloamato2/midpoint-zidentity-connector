@@ -1,0 +1,53 @@
+# Release — Build connector JAR and publish as GitHub Release on version tag
+
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*"          # e.g. v1.0, v1.1, v2.0-beta
+
+jobs:
+  release:
+    name: Build & Publish Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # required to create the GitHub Release
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: temurin
+          cache: maven
+
+      - name: Build connector bundle
+        run: mvn --batch-mode --no-transfer-progress clean package -DskipTests
+
+      - name: Determine artifact path
+        id: artifact
+        run: |
+          JAR=$(ls target/*-connector.jar | head -1)
+          echo "path=$JAR" >> "$GITHUB_OUTPUT"
+          echo "name=$(basename $JAR)" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "ZIdentity Connector ${{ github.ref_name }}"
+          body: |
+            ## ZIdentity MidPoint Connector ${{ github.ref_name }}
+
+            ### Installation
+            1. Download `${{ steps.artifact.outputs.name }}` from the assets below.
+            2. Copy it to your MidPoint `icf-connectors/` directory.
+            3. Restart MidPoint (or refresh the connector list in the UI).
+
+            ### Changes
+            See [CHANGELOG](https://github.com/${{ github.repository }}/commits/${{ github.ref_name }}) for the full commit history.
+          files: ${{ steps.artifact.outputs.path }}
+          fail_on_unmatched_files: true
