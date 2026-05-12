@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2010-2018 Evolveum
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>connector-parent</artifactId>
+        <groupId>com.evolveum.polygon</groupId>
+        <version>1.5.2.0</version>
+        <relativePath></relativePath>
+    </parent>
+
+    <groupId>com.example.midpoint.zidentity</groupId>
+    <artifactId>zidentity</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+
+    <name>Zscaler ZIdentity</name>
+
+    <properties>
+        <connectorPackage>com.example.midpoint.zidentity</connectorPackage>
+        <connectorClass>ZIdentityConnector</connectorClass>
+        <!-- Override the ConnId framework version inherited from connector-parent.
+             Use 1.6.0.0 to match the version available in the target MidPoint instance. -->
+        <connId.version>1.6.0.0</connId.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>evolveum-nexus-releases</id>
+            <name>Internal Releases</name>
+            <url>https://nexus.evolveum.com/nexus/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>evolveum-nexus-snapshots</id>
+            <name>Internal Snapshots</name>
+            <url>https://nexus.evolveum.com/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <!-- Required for net.tirasa.connid:connector-framework:1.6.1.0
+             which is not mirrored on the Evolveum Nexus. -->
+        <repository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>9</source>
+                    <target>9</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>logging-interceptor</artifactId>
+            <version>4.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.13.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+    </dependencies>
+
+</project>
