@@ -48,6 +48,20 @@
             <url>https://nexus.evolveum.com/nexus/content/repositories/releases/</url>
         </repository>
         <repository>
+            <id>evolveum-nexus-releases-v3</id>
+            <name>Internal Releases (Nexus 3)</name>
+            <url>https://nexus.evolveum.com/nexus/repository/releases/</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </repository>
+        <repository>
+            <id>evolveum-nexus-public</id>
+            <name>Evolveum Public Group (Nexus 3)</name>
+            <url>https://nexus.evolveum.com/nexus/repository/public/</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </repository>
+        <repository>
             <id>evolveum-nexus-snapshots</id>
             <name>Internal Snapshots</name>
             <url>https://nexus.evolveum.com/nexus/content/repositories/snapshots/</url>
@@ -73,8 +87,10 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>9</source>
-                    <target>9</target>
+                    <!-- Java 11: minimum version required by MidPoint 4.x and needed
+                         for 'var' (local-variable type inference, JEP 286) in tests. -->
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -84,6 +100,8 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <!-- Version 2.22.0+ is required for JUnit 5 (JUnit Platform) support. -->
+                <version>3.2.5</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
                 </configuration>
