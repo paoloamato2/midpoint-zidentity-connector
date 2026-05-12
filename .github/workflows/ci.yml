@@ -1,4 +1,4 @@
-# CI — Build and test on every push and pull request
+# CI - Build and test on every push and pull request
 
 name: CI
 
@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         java: [ "11", "17", "21" ]
 
@@ -27,6 +28,79 @@ jobs:
           java-version: ${{ matrix.java }}
           distribution: temurin
           cache: maven
+
+      # Write a Maven settings.xml that adds the Evolveum Nexus repos
+      # (both Nexus 2 and Nexus 3 URL formats) so that the parent POM
+      # com.evolveum.polygon:connector-parent can be resolved in CI.
+      - name: Configure Maven settings
+        run: |
+          mkdir -p "$HOME/.m2"
+          cat > "$HOME/.m2/settings.xml" <<'SETTINGS'
+          <settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0
+                                        https://maven.apache.org/xsd/settings-1.2.0.xsd">
+            <profiles>
+              <profile>
+                <id>evolveum</id>
+                <repositories>
+                  <repository>
+                    <id>evolveum-public</id>
+                    <name>Evolveum Nexus Public</name>
+                    <url>https://nexus.evolveum.com/nexus/repository/public/</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                  </repository>
+                  <repository>
+                    <id>evolveum-releases-v3</id>
+                    <name>Evolveum Nexus Releases (Nexus 3)</name>
+                    <url>https://nexus.evolveum.com/nexus/repository/releases/</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                  </repository>
+                  <repository>
+                    <id>evolveum-releases-v2</id>
+                    <name>Evolveum Nexus Releases (Nexus 2)</name>
+                    <url>https://nexus.evolveum.com/nexus/content/repositories/releases/</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                  </repository>
+                  <repository>
+                    <id>central</id>
+                    <name>Maven Central</name>
+                    <url>https://repo.maven.apache.org/maven2</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                  </repository>
+                </repositories>
+                <pluginRepositories>
+                  <pluginRepository>
+                    <id>evolveum-public-plugins</id>
+                    <url>https://nexus.evolveum.com/nexus/repository/public/</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                  </pluginRepository>
+                  <pluginRepository>
+                    <id>evolveum-releases-plugins</id>
+                    <url>https://nexus.evolveum.com/nexus/repository/releases/</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                  </pluginRepository>
+                </pluginRepositories>
+              </profile>
+            </profiles>
+            <activeProfiles>
+              <activeProfile>evolveum</activeProfile>
+            </activeProfiles>
+          </settings>
+          SETTINGS
+
+      - name: Print build environment
+        run: |
+          echo "=== Java version ==="
+          java -version
+          echo "=== Maven version ==="
+          mvn --version
 
       - name: Build and run tests
         run: mvn --batch-mode --no-transfer-progress clean verify

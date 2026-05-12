@@ -43,10 +43,10 @@
 
 - **Full CRUD** for ZIdentity Users (`__ACCOUNT__`) and Groups
 - **OAuth 2.0 `client_credentials`** authentication with automatic token caching and refresh
-- **Paginated list operations** — streams pages to avoid loading all records in memory
-- **Group membership reconciliation** — diff-based add/remove with minimal API calls
-- **UpdateDelta** support — incremental attribute updates without full replace
-- **Configurable SSL verification** — disable only in non-production environments
+- **Paginated list operations** - streams pages to avoid loading all records in memory
+- **Group membership reconciliation** - diff-based add/remove with minimal API calls
+- **UpdateDelta** support - incremental attribute updates without full replace
+- **Configurable SSL verification** - disable only in non-production environments
 - Implements `TestOp`, `SchemaOp`, `CreateOp`, `DeleteOp`, `SearchOp`, `UpdateOp`, `UpdateDeltaOp`
 
 ---
@@ -55,7 +55,7 @@
 
 | Operation | User (`__ACCOUNT__`) | Group |
 |---|:---:|:---:|
-| **Test connection** | ✅ | — |
+| **Test connection** | ✅ | - |
 | **Schema** | ✅ | ✅ |
 | **Create** | ✅ | ✅ |
 | **Read / Search** | ✅ | ✅ |
@@ -81,11 +81,11 @@
 ### 1. Create an API client in ZIdentity
 
 1. Log into the **ZIdentity Admin Console**
-2. Navigate to **Administration > API Clients**
+2. Navigate to **Integration > API Clients**
 3. Click **Add API Client** and assign the minimum required permissions:
    - `Users: Read / Write`
    - `Groups: Read / Write`
-4. Note the **Client ID** and **Client Secret** — the secret is shown only once
+4. Note the **Client ID** and **Client Secret** - the secret is shown only once
 
 ### 2. Build the connector JAR
 
@@ -107,7 +107,7 @@ target/zidentity-1.0-connector.jar
 Copy the JAR to MidPoint's connector directory and restart:
 
 ```bash
-cp target/zidentity-1.0-connector.jar /opt/midpoint/var/icf-connectors/
+cp target/zidentity-1.0-connector.jar /opt/midpoint/var/connid-connectors/
 # then restart MidPoint
 ```
 
@@ -132,12 +132,12 @@ Create a new **Resource** in MidPoint and select the `Zscaler ZIdentity` connect
 
 | Property | Type | Required | Default | Description |
 |---|---|:---:|---|---|
-| `tenant` | String | ✅ | — | Zscaler tenant name. If the login URL is `https://acme.zslogin.net`, enter `acme`. |
-| `clientId` | String | ✅ | — | OAuth2 client ID from the ZIdentity admin console. |
-| `clientSecret` | GuardedString | ✅ | — | OAuth2 client secret. Stored encrypted. |
-| `sslVerify` | Boolean | — | `true` | Verify the TLS certificate of Zscaler endpoints. Disable only in non-production. |
-| `fetchGroupMemberships` | Boolean | — | `true` | Fetch group memberships for every user during list operations (one extra API call per user). Disable for better performance if group data is managed via the Group object class. |
-| `pageSize` | Integer | — | `200` | Records per page for paginated list calls (1–1000). |
+| `tenant` | String | ✅ | - | Zscaler tenant name. If the login URL is `https://acme.zslogin.net`, enter `acme`. |
+| `clientId` | String | ✅ | - | OAuth2 client ID from the ZIdentity admin console. |
+| `clientSecret` | GuardedString | ✅ | - | OAuth2 client secret. Stored encrypted. |
+| `sslVerify` | Boolean | - | `true` | Verify the TLS certificate of Zscaler endpoints. Disable only in non-production. |
+| `fetchGroupMemberships` | Boolean | - | `true` | Fetch group memberships for every user during list operations (one extra API call per user). Disable for better performance if group data is managed via the Group object class. |
+| `pageSize` | Integer | - | `200` | Records per page for paginated list calls (1-1000). |
 
 ---
 
@@ -179,7 +179,7 @@ Group memberships are exposed as a multi-valued `ConnectorObjectReference` attri
 
 **How it works:**
 
-- **Create / UpdateOp (full replace):** all desired group IDs are reconciled against the current state — missing memberships are added, extra ones are removed.
+- **Create / UpdateOp (full replace):** all desired group IDs are reconciled against the current state - missing memberships are added, extra ones are removed.
 - **UpdateDeltaOp (incremental):**
   - `valuesToAdd` → calls `POST /groups/{id}/users/{userId}`
   - `valuesToRemove` → calls `DELETE /groups/{id}/users/{userId}`

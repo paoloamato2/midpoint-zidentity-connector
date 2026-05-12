@@ -48,6 +48,20 @@
             <url>https://nexus.evolveum.com/nexus/content/repositories/releases/</url>
         </repository>
         <repository>
+            <id>evolveum-nexus-releases-v3</id>
+            <name>Internal Releases (Nexus 3)</name>
+            <url>https://nexus.evolveum.com/nexus/repository/releases/</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </repository>
+        <repository>
+            <id>evolveum-nexus-public</id>
+            <name>Evolveum Public Group (Nexus 3)</name>
+            <url>https://nexus.evolveum.com/nexus/repository/public/</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </repository>
+        <repository>
             <id>evolveum-nexus-snapshots</id>
             <name>Internal Snapshots</name>
             <url>https://nexus.evolveum.com/nexus/content/repositories/snapshots/</url>
