@@ -3,9 +3,9 @@
 <p align="center">
   <img src="https://img.shields.io/badge/MidPoint-ConnId-0082C8?style=for-the-badge&logo=evolveum&logoColor=white" alt="MidPoint">
   <img src="https://img.shields.io/badge/Zscaler-ZIdentity-003366?style=for-the-badge&logo=zscaler&logoColor=white" alt="ZIdentity">
-  <img src="https://img.shields.io/badge/Java-9%2B-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java">
+  <img src="https://img.shields.io/badge/Java-11%2B-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java">
   <img src="https://img.shields.io/badge/OAuth2-client__credentials-green?style=for-the-badge" alt="OAuth2">
-  <img src="https://img.shields.io/github/license/paoloamato2/midpoint-zidentity-connector?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/badge/License-Apache%202.0-blue?style=for-the-badge" alt="License">
   <img src="https://img.shields.io/github/stars/paoloamato2/midpoint-zidentity-connector?style=for-the-badge" alt="Stars">
 </p>
 
